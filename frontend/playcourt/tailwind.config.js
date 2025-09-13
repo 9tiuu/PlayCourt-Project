@@ -2,6 +2,7 @@ const flowbite = require("flowbite-react/tailwind");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/**/*.{js,ts,jsx,tsx}", 
     flowbite.content(),
@@ -12,13 +13,13 @@ module.exports = {
   ],
   theme: {
     colors: {
-      color1:'#A74FFF',
-      color2:'#5F00BF',
-      color3:'#27273A',
-      color4:'#1B1B28',
-      color5:'#0F0F15',
-      color6:'#0A0A0A',
-      color7:'#5765F2'
+      color1:'#1e1e2a',
+      color2:'#252736',
+      color3:'#494c6a',
+      color4:'#292b3c',
+      color5:'#33354a',
+      color6:'#232331',
+      // color7:'#5765F2'
     },
   }
 };
