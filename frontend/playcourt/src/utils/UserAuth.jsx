@@ -7,13 +7,17 @@ const UserAuth = () => {
     const fetchCurrentUser = async () => {
         try {
             const token = sessionStorage.getItem("access_token");
+
             const clientData = await api.get("me/", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUser(clientData.data);
 
         } catch (err) {
-            console.error("Error obteniendo usuario:", err.response?.data || err);
+            // console.error("Error obteniendo usuario:", err.response?.data || err);
+            if (err.response?.data || err) {
+                sessionStorage.removeItem("access_token");
+            };
         };
     };
 

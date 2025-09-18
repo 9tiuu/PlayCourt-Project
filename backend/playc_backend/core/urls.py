@@ -4,8 +4,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from .views import MyTokenObtainPairView, CurrentUserView
 
 urlpatterns = [
-    path('createusers/', CreateUsersView.as_view(), name='createusers'),
-    path('createrol/', CreateUserRolView.as_view(), name='createrol'),
+    path('users/', CreateUsersView.as_view(), name='users'),
+    path('roles/', CreateUserRolView.as_view(), name='roles'),
     path("me/", CurrentUserView.as_view(), name="current_user"),
 
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
