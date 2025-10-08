@@ -17,11 +17,12 @@ class MainUserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainUser
-        fields = ('name', 'lastname', 'email', 'rol', 'rol_id', 'gender', 'password')
+        fields = ('id', 'name', 'lastname', 'email', 'rol', 'rol_id', 'gender', 'password')
 
     def create(self, validated_data):
         # Aquí usamos create_user para que Django maneje password e is_active
         user = MainUser.objects.create_user(
+            # el id se creo automaticamente
             username=validated_data['email'],  # username = email
             email=validated_data['email'],
             password=validated_data['password'],

@@ -11,6 +11,7 @@ class UserRol(models.Model):
 
 
 class MainUser(AbstractUser):
+    # el id se creo automaticamente
     name = models.CharField(max_length=50, null=True, blank=True)
     lastname = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
