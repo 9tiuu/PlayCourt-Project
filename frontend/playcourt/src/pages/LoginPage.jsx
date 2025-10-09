@@ -59,7 +59,7 @@ const LoginPage = () => {
                 sessionStorage.setItem("refresh_token", client.data.refresh);
 
                 alert('¡Sesión iniciada!');
-                navigate('/');
+                navigate('/system/home');
 
             } catch (err) { 
                 if (err.response) {

@@ -13,3 +13,9 @@
     background-size: cover;
     background-position: center;
 }
+
+.bg-web {
+    background: linear-gradient(#0000008c, #0000008c), url('https://www.teleflor.com.ar/wp-content/uploads/cuanto-vale-poner-una-cancha-de-futbol.webp');
+    background-size: cover;
+    background-position: center;
+}

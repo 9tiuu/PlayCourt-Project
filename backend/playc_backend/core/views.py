@@ -1,8 +1,8 @@
 # from django.shortcuts import render
 from .permissions import IsAdminRole
 from rest_framework import generics
-from .models import MainUser, UserRol
-from .serializers import MainUserCreateSerializer, UserRolSerializer, MyTokenObtainPairSerializer
+from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas
+from .serializers import MainUserCreateSerializer, UserRolSerializer, MyTokenObtainPairSerializer, EstadosCanchaSerializer, CategoriasCanchaSerializer, CanchasSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +17,23 @@ class CreateUsersView(generics.ListCreateAPIView):
     queryset = MainUser.objects.all()
     serializer_class = MainUserCreateSerializer
     # permission_classes = [IsAuthenticated, IsAdminRole]
+
+class EstadosCanchaView(generics.ListCreateAPIView):
+    queryset = EstadosCancha.objects.all()
+    serializer_class = EstadosCanchaSerializer
+    # permission_classes = [IsAuthenticated, IsAdminRole]
+
+class CategoriasCanchaView(generics.ListCreateAPIView):
+    queryset = CategoriasCancha.objects.all()
+    serializer_class = CategoriasCanchaSerializer
+
+class CanchasView(generics.ListCreateAPIView):
+    queryset = Canchas.objects.all()
+    serializer_class = CanchasSerializer
+
+class CanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Canchas.objects.all()
+    serializer_class = CanchasSerializer
 
 # --------------------------------------------------------------------------------------- #
 

@@ -7,10 +7,13 @@ import './styles/styles.css';
 import HomePage from "./pages/HomePage";
 import ErrorPage from './pages/ErrPage';
 import LoginPage from './pages/LoginPage';
-import UsersView from './pages/usuarios/UsersView';
+import UsuariosPage from './pages/usuarios/UsuariosPage';
+import CanchasPage from './pages/canchas/CanchasPage';
+import HomeWebPage from './pages/website/HomeWebPage';
+import ReservationsWebPage from './pages/website/ReservationsWebPage';
 
 const Router = createBrowserRouter([
-    { path: '/', element: (
+    { path: '/system/home', element: (
         <ProtectedRoute> 
           <HomePage />
         </ProtectedRoute>
@@ -18,14 +21,23 @@ const Router = createBrowserRouter([
     },
     
     // Restringir vista: solo acceso con rol de administrador
-    { path: '/usuarios', element: (
-        <>
-          <UsersView />
-        </>
+    { path: '/system/usuarios', element: (
+        <ProtectedRoute>
+          <UsuariosPage />
+        </ProtectedRoute>
       ) 
     },
 
-    { path: '/login', element: <LoginPage /> },
+    { path: '/system/canchas', element: (
+        <ProtectedRoute>
+          <CanchasPage />
+        </ProtectedRoute>
+      ) 
+    },
+    
+    { path: '/system/login', element: <LoginPage /> },
+    { path: '/', element: <HomeWebPage /> },
+    { path: '/reservas', element: <ReservationsWebPage /> },
     { path: '*', element: <ErrorPage /> },
 ]);
 

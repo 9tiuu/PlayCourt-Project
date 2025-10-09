@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import MainUser, UserRol
+from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas
 
 class UserRolSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,3 +56,38 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # IMPORTANTE: pasar al serializer padre lo que espera: el campo definido en username_field
         return super().validate({self.username_field: email, "password": password})
+
+class EstadosCanchaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadosCancha
+        fields = '__all__'
+
+class CategoriasCanchaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoriasCancha
+        fields = '__all__'
+
+class EstadosCanchaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadosCancha
+        fields = '__all__'
+
+class CanchasSerializer(serializers.ModelSerializer):
+    categoria_cancha = CategoriasCanchaSerializer(read_only=True)
+    categoria_cancha_id = serializers.PrimaryKeyRelatedField(
+        queryset=CategoriasCancha.objects.all(), source='categoria_cancha', write_only=True
+    )
+
+    estado_cancha = EstadosCanchaSerializer(read_only=True)
+    estado_cancha_id = serializers.PrimaryKeyRelatedField(
+        queryset=EstadosCancha.objects.all(), source='estado_cancha', write_only=True
+    )
+
+    usuario = MainUserCreateSerializer(read_only=True)
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=MainUser.objects.all(), source='usuario', write_only=True
+    )
+
+    class Meta:
+        model = Canchas
+        fields = '__all__'

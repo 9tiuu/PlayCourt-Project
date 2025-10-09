@@ -9,7 +9,6 @@ class UserRol(models.Model):
     def __str__(self):
         return f'{self.namerol}'
 
-
 class MainUser(AbstractUser):
     # el id se creo automaticamente
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -22,4 +21,27 @@ class MainUser(AbstractUser):
     USERNAME_FIELD = 'email' 
 
     def __str__(self):
-        return f'{self.name} {self.lastname} {self.rut}'
+        return f'{self.name} {self.lastname}'
+    
+class EstadosCancha(models.Model):
+    # estado_cancha_id se crea automaticamente
+    estado_cancha_nombre = models.CharField(max_length=50, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f'{self.estado_cancha_nombre}'
+
+class CategoriasCancha(models.Model):
+    # categoria_cancha_id se crea automaticamente
+    categoria_cancha_nombre = models.CharField(max_length=50, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f'{self.categoria_cancha_nombre}'
+    
+class Canchas(models.Model):
+    # cancha_id se crea automaticamente
+    cancha_numero = models.IntegerField()
+    cancha_nombre = models.CharField(max_length=50)
+    cancha_dimension = models.CharField(max_length=50)
+    categoria_cancha = models.ForeignKey(CategoriasCancha, on_delete=models.SET_NULL, null=True, blank=True)
+    estado_cancha = models.ForeignKey(EstadosCancha, on_delete=models.SET_NULL, null=True, blank=True)
+    usuario = models.ForeignKey(MainUser, on_delete=models.SET_NULL, null=True, blank=True)

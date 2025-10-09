@@ -31,7 +31,7 @@ const NavSystem = ({ OpenMenuBottom }) => {
     const handleLogout = () => { // eliminar el usuario guardado en el localstorage
         sessionStorage.removeItem("access_token");
         sessionStorage.removeItem("refresh_token");
-        navigate('/login');
+        navigate('/system/login');
     };
 
     return (

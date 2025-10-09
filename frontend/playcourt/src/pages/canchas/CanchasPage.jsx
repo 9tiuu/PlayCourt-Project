@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import NavSystem from '../../components/NavSystem';
 import OptionsMenu from '../../components/OptionsMenu';
-import UserListPage from '../../components/users/UserListPage';
 import { Link } from 'react-router-dom';
+import CanchasListView from '../../components/canchas/CanchasListView';
 
-
-const UsersView = () => {
+const CanchasPage = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const options = OptionsMenu();
 
@@ -44,7 +43,7 @@ const UsersView = () => {
                 <div className="p-4 sm:ml-64 mt-3 bg-white dark:bg-color1">
                     <div className="p-4 border-2 border-gray-300 border-dashed rounded-lg h-[90vh] dark:border-color5 mt-14">
                         <div className="">
-                            <UserListPage />
+                            <CanchasListView />
                         </div>
                     </div>
                 </div>
@@ -53,4 +52,4 @@ const UsersView = () => {
     );
 }
 
-export default UsersView;
+export default CanchasPage;

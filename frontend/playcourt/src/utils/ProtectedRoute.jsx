@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (!token) {
     // No hay token → redirigir al login
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/system/login" replace />;
   }
 
   // Si hay token, renderizar la vista protegida

@@ -17,8 +17,6 @@ const HomePage = () => {
         setOpenMenu(!openMenu)
     };
     
-    
-
     return (
         <>
             <main>
