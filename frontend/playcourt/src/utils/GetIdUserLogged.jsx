@@ -1,7 +1,7 @@
 import api from '../api/apis';
 import { useState, useEffect } from 'react';
 
-const UserAuth = () => {
+const GetIdUserLogged = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const UserAuth = () => {
             const response = await api.get("me/", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setUser(response.data);
+            setUser(response.data.id);
 
         } catch (err) {
             console.error("Error obteniendo usuario:", err.response?.data || err);
@@ -27,4 +27,4 @@ const UserAuth = () => {
     return user;
 };
 
-export default UserAuth;
+export default GetIdUserLogged;

@@ -19,3 +19,63 @@
     background-size: cover;
     background-position: center;
 }
+
+.bg-futbol {
+    background: linear-gradient(#0000008c, #0000008c), url('../img/cancha/futbol.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-basquet {
+    background: linear-gradient(#0000008c, #0000008c), url('../img/cancha/basquet.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-tenis {
+    background: linear-gradient(#0000008c, #0000008c), url('../img/cancha/tenis.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-padel {
+    background: linear-gradient(#0000008c, #0000008c), url('../img/cancha/padel.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-futbol2 {
+    background: linear-gradient(#00000029, #00000029), url('../img/cancha/futbol.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-basquet2 {
+    background: linear-gradient(#00000029, #00000029), url('../img/cancha/basquet.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-tenis2 {
+    background: linear-gradient(#00000029, #00000029), url('../img/cancha/tenis.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-padel2 {
+    background: linear-gradient(#00000029, #00000029), url('../img/cancha/padel.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-form {
+    background: url('../img/loginbg.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-reservas-web {
+    background: url('../img/bg1.jpg');
+    background-size: cover;
+    background-position: center;
+}

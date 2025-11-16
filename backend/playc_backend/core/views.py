@@ -1,8 +1,8 @@
 # from django.shortcuts import render
 from .permissions import IsAdminRole
 from rest_framework import generics
-from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas
-from .serializers import MainUserCreateSerializer, UserRolSerializer, MyTokenObtainPairSerializer, EstadosCanchaSerializer, CategoriasCanchaSerializer, CanchasSerializer
+from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas, Empleados, HorariosReserva, EstadosReserva, ReservasCanchas
+from .serializers import MainUserCreateSerializer, UserUpdateSerializer, UserRolSerializer, MyTokenObtainPairSerializer, EstadosCanchaSerializer, CategoriasCanchaSerializer, CanchasSerializer, EmpleadosSerializer, HorariosReservaSerializer, EstadosReservaSerializer, ReservasCanchaSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,6 +16,10 @@ class CreateUserRolView(generics.ListCreateAPIView):
 class CreateUsersView(generics.ListCreateAPIView):
     queryset = MainUser.objects.all()
     serializer_class = MainUserCreateSerializer
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MainUser.objects.all()
+    serializer_class = UserUpdateSerializer
     # permission_classes = [IsAuthenticated, IsAdminRole]
 
 class EstadosCanchaView(generics.ListCreateAPIView):
@@ -34,6 +38,38 @@ class CanchasView(generics.ListCreateAPIView):
 class CanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Canchas.objects.all()
     serializer_class = CanchasSerializer
+
+class EmpleadosCreateView(generics.ListCreateAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+
+class EmpleadosDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+
+class HorariosReservaCreateView(generics.ListCreateAPIView):
+    queryset = HorariosReserva.objects.all()
+    serializer_class = HorariosReservaSerializer
+
+class HorariosReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HorariosReserva.objects.all()
+    serializer_class = HorariosReservaSerializer
+
+class EstadosReservaCreateView(generics.ListCreateAPIView):
+    queryset = EstadosReserva.objects.all()
+    serializer_class = EstadosReservaSerializer
+
+class EstadosReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EstadosReserva.objects.all()
+    serializer_class = EstadosReservaSerializer
+
+class ReservasCanchasCreateView(generics.ListCreateAPIView):
+    queryset = ReservasCanchas.objects.all()
+    serializer_class = ReservasCanchaSerializer
+
+class ReservasCanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ReservasCanchas.objects.all()
+    serializer_class = ReservasCanchaSerializer
 
 # --------------------------------------------------------------------------------------- #
 
