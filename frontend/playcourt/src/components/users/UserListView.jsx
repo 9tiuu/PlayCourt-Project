@@ -365,7 +365,7 @@ const UserListView = () =>{
                     <div className="absolute flex items-center justify-center top-0 left-0 bottom-0 right-0 w-full h-full bg-black bg-opacity-45 p-4">
                         <div className="bg-white dark:bg-color2 md:w-[40rem] w-full h-auto rounded-lg p-6">
                             <h3 className='uppercase text-black dark:text-white font-bold text-xl'>Actualizar Usuario</h3>
-                            <p className='text-black dark:text-white mt-1'>Actualize los datos del usuario en los siguientes estos campos</p>
+                            <p className='text-black dark:text-white mt-1'>Actualice los datos del usuario en los siguientes estos campos</p>
 
                             <form onSubmit={ActualizarUsuario} className='mt-6'>
                                 <div className="flex gap-2">

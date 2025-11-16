@@ -53,24 +53,27 @@ const CanchasListView = () =>{
 
         if (formData.cancha_nombre.trim() === '' || formData.cancha_numero.trim() === '' || formData.cancha_dimension.trim() === '' || !formData.cancha_precio || formData.categoria_cancha_id.trim() === '' || formData.estado_cancha_id.trim() === '') {
             setErrors('No pueden haber campos vacíos');
-            console.log(formData);
+            setTimeout(() => setErrors(''), 3000);
             return
         };
             
         try {
             await api.post('canchasdeportivas/', formData);
             setMessage('¡Cancha creada con exito!');
+            setTimeout(() => setMessage(''), 3000);
             setErrors('');
             setFormData({ cancha_nombre: '', cancha_numero: '', cancha_dimension: '', cancha_precio: '', categoria_cancha_id: '', estado_cancha_id: ''});
             obtenerCanchas();
-            console.log(formData);
 
         } catch(error) {
-            console.log(error.message);
-            console.log(newCancha);
-            console.log(formData);
-                
-            setErrors('Error al crear la cancha');
+            console.log(error.message);  
+                        
+            if (error.response?.data?.non_field_errors) {
+                setErrors(error.response.data.non_field_errors[0]);
+            } 
+            else { setErrors('Error al crear la cancha') };
+
+            setTimeout(() => setErrors(''), 3000);
         };
 
     };
@@ -79,16 +82,26 @@ const CanchasListView = () =>{
         e.preventDefault();
 
         if (formData.cancha_nombre.trim() === '' || String(formData.cancha_numero).trim() === '' || formData.cancha_dimension.trim() === '' || !formData.cancha_precio || !formData.categoria_cancha_id || !formData.estado_cancha_id) {
-            setErrors('No pueden haber campos vacíos')
+            setErrors('No pueden haber campos vacíos');
+            setTimeout(() => setErrors(''), 3000);
+
         } else {
             try {
                 await api.put(`canchasdeportivas/${idCancha}/`, formData);
                 setMessage('¡Cancha actualizada con exito!');
+                setTimeout(() => setMessage(''), 3000);
                 setFormData({ cancha_nombre: '', cancha_numero: '', cancha_dimension: '', cancha_precio: '', categoria_cancha_id: '', estado_cancha_id: ''});
                 obtenerCanchas();
+
             } catch(error) {
                 console.log(error.message);
-                console.log(formData);
+                
+                if (error.response?.data?.non_field_errors) {
+                    setErrors(error.response.data.non_field_errors[0]);
+                } 
+                else { setErrors('Error al crear la cancha') };
+
+                setTimeout(() => setErrors(''), 3000);
             };
         };  
 
@@ -236,7 +249,7 @@ const CanchasListView = () =>{
                             <th className="px-6 py-3 text-left font-bold">Precio</th>
                             <th className="px-6 py-3 text-left font-bold">Categoría</th>
                             <th className="px-6 py-3 text-left font-bold">Estado</th>
-                            <th className="px-6 py-3 text-left font-bold">Creado por</th>
+                            {/* <th className="px-6 py-3 text-left font-bold">Creado por</th> */}
                             <th className="px-6 py-3 text-left font-bold">Acciones</th>
                         </tr>
                     </thead>
@@ -256,7 +269,7 @@ const CanchasListView = () =>{
                                             {c.estado_cancha?.estado_cancha_nombre}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-3">{c.usuario?.name} {c.usuario?.lastname}</td>
+                                    {/* <td className="px-6 py-3">{c.usuario?.name} {c.usuario?.lastname}</td> */}
                                     
 
                                     <td className='px-6 py-3 flex gap-2'>

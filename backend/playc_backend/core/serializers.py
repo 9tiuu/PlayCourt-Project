@@ -114,6 +114,26 @@ class CanchasSerializer(serializers.ModelSerializer):
         model = Canchas
         fields = '__all__'
 
+    def validate(self, attrs):
+        nombre = attrs.get('cancha_nombre') or getattr(self.instance, 'cancha_nombre', None)
+        numero = attrs.get('cancha_numero') or getattr(self.instance, 'cancha_numero', None)
+
+        # Armamos queryset base
+        qs = Canchas.objects.filter(cancha_nombre=nombre, cancha_numero=numero)
+
+        # Si estamos editando, excluir la instancia actual
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+
+        if qs.exists():
+            raise serializers.ValidationError({
+                "non_field_errors": [
+                    "Ya existe una cancha deportiva con el mismo nombre y número."
+                ]
+            })
+
+        return attrs
+
 class EmpleadosSerializer(serializers.ModelSerializer):
     usuario = MainUserCreateSerializer(read_only=True)
     usuario_id = serializers.PrimaryKeyRelatedField(

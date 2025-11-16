@@ -151,9 +151,11 @@ const FormReservationWebPage = () => {
                                         <li><b>Precio total:</b> ${canchaSeleccionada?.cancha_precio}</li>
                                     </ul>
 
+                                    <p className='text-black mt-1'>Una vez realizado su reserva, <b>tendrá 20 min para solicitar el uso de la cancha deportiva</b> según la fecha seleccionada, de lo contrario su reserva quedará como expirada.</p>
+
                                     <p className='h-0.5 w-full bg-gray-300 my-4 rounded-full'></p>
 
-                                    <p className='text-black'>Por favor, antes de retirarse del lugar, recuerde depositar su basura en los contenedores correspondientes.</p>
+                                    <p className='text-black '>Por favor, antes de retirarse del lugar, recuerde depositar su basura en los contenedores correspondientes.</p>
                                     
                                     <p className='h-0.5 w-full bg-gray-300 my-4 rounded-full'></p>
 

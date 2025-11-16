@@ -19,6 +19,17 @@ const ReservasListView = () =>{
     const [listHorarios, setListHorarios] = useState([]);
     const [listEstadosReserva, setListEstadosReserva] = useState([]);
     const user = UserAuth();
+    const [listUsers, setlistUsers] = useState([]);
+
+    const getUsers = async () => {
+        try {
+            const response = await api.get('users/');
+            setlistUsers(response.data);
+
+        } catch(error){
+            console.log(error.message);
+        };
+    };
 
     useEffect(() => {
         setCreatedByUser(idUser);
@@ -194,6 +205,8 @@ const ReservasListView = () =>{
                 console.log(error.message);
                 setErrors(error.response.data.detail);
                 setTimeout(() => setErrors(''), 3000);
+                console.log(IdUsuarioOriginal);
+                
             };
         };  
     };
@@ -217,6 +230,7 @@ const ReservasListView = () =>{
         obtenerCanchas();
         obtenerHorarios();
         obtenerEstadosReserva();
+        getUsers();
     }, []);
 
     const ActivateAddModal = () => {
@@ -227,7 +241,13 @@ const ReservasListView = () =>{
 
     const ActivateEditModal = (id, UsuarioOriginal) => {
         setIdReserva(id);
-        setIdUsuarioOriginal(UsuarioOriginal);
+
+        if (UsuarioOriginal === undefined) {
+            setIdUsuarioOriginal(null);
+        } else {
+            setIdUsuarioOriginal(UsuarioOriginal);
+        };
+
         const reservaSeleccionada = listReservas.find(c => c.id === id);
 
         if (reservaSeleccionada) {
@@ -468,8 +488,8 @@ const ReservasListView = () =>{
                 updateModal && (
                     <div className="absolute flex items-center justify-center top-0 left-0 bottom-0 right-0 w-full h-full bg-black bg-opacity-45 p-4">
                         <div className="bg-white dark:bg-color2 md:w-[40rem] w-full h-auto rounded-lg p-6">
-                            <h3 className='uppercase text-black dark:text-white font-bold text-xl'>Nueva reserva</h3>
-                            <p className='text-black dark:text-white mt-1'>Agregue una nueva reserva al sistema completando estos campos</p>
+                            <h3 className='uppercase text-black dark:text-white font-bold text-xl'>Actualizar reserva</h3>
+                            <p className='text-black dark:text-white mt-1'>Actualice los datos de reserva al sistema completando estos campos</p>
 
                             <form onSubmit={EditarReserva} className='mt-6 overflow-y-auto h-[31rem]'>
                                 <div className="flex gap-3">
@@ -545,23 +565,83 @@ const ReservasListView = () =>{
                 detailsModal && (
                     <div className="absolute flex items-center justify-center top-0 left-0 bottom-0 right-0 w-full h-full bg-black bg-opacity-45 p-4">
                         <div className="bg-white dark:bg-color2 md:w-[40rem] w-full h-auto rounded-lg p-6">
-                            <h3 className='uppercase text-black dark:text-white font-bold text-xl'>Detalles de horario de reserva</h3>
-                            <div className='mt-6'>
-                                <div className="relative w-full mb-6">
-                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-2 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">{formDataUpdate.horario_reserva_hora}</p>
-                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Hora de inicio</label>
+                            <h3 className='uppercase text-black dark:text-white font-bold text-xl'>Detalles de la reserva</h3>
+                            <p className='text-black dark:text-white mt-1'></p>
+
+                            <div className='mt-6 overflow-y-auto h-[31rem]'>
+                                <div className="flex gap-3 mt-1">
+                                    <div className="relative w-full mb-3">
+                                        <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                            {formDataUpdate.nombre_cliente}
+                                        </p>
+                                        <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Nombre cliente</label>
+                                    </div>
+                                    <div className="relative w-full mb-3">
+                                        <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                            {formDataUpdate.apellido_cliente}
+                                        </p>
+                                        
+                                        <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Apellido cliente</label>
+                                    </div>
                                 </div>
-                                <div className="relative w-full mb-6">
-                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-2 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">{formDataUpdate.horario_reserva_termino}</p>
-                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Hora de termino</label>
-                                </div>
-                                <div className="relative w-full mb-6">
-                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-2 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">{formDataUpdate.horario_reserva_expiracion}</p>
-                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Hora de expiración</label>
+                                <div className="relative w-full mb-3">
+                                    <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                        {formDataUpdate.correo_cliente}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Correo cliente</label>
                                 </div>
 
-                                <div className="flex gap-4 md:items-center justify-end mb-6 md:flex-row flex-col">
-                                    <button onClick={DesactivateDetailModal} className="bg-blue-600 flex items-center justify-center gap-2 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white py-3 px-6 rounded" title="Cancelar">
+                                <div className="relative w-full mb-3">
+                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                                        {listCanchas.find(r => r.id === formDataUpdate.cancha_deportiva_id)?.cancha_nombre || ''} Nº{listCanchas.find(r => r.id === formDataUpdate.cancha_deportiva_id)?.cancha_numero || ''}       
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Cancha deportiva</label>
+                                </div>                
+
+                                <div className="relative w-full mb-3">
+                                    <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                        {formDataUpdate.reserva_precio}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Precio</label>
+                                </div>
+
+                                <div className="relative w-full mb-3">
+                                    <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                        {formDataUpdate.reserva_fecha}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Fecha reservada</label>
+                                </div>
+
+                                <div className="relative w-full mb-3">
+                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                                        {listHorarios.find(r => r.id === formDataUpdate.horario_reserva_id)?.horario_reserva_hora || ''} - {listHorarios.find(r => r.id === formDataUpdate.horario_reserva_id)?.horario_reserva_termino || ''}      
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Horario reservado</label>
+                                </div>  
+
+                                <div className="relative w-full mb-3">
+                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                                        {listEstadosReserva.find(r => r.id === formDataUpdate.estado_reserva_id)?.estado_reserva_nombre || ''}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Horario reservado</label>
+                                </div>  
+
+                                <div className="relative w-full mb-3">
+                                    <p className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                                        {listUsers.find(r => r.id === formDataUpdate.usuario_id)?.name || ''} {listUsers.find(r => r.id === formDataUpdate.usuario_id)?.lastname || 'Cliente Web'}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Creado por</label>
+                                </div>  
+
+                                <div className="flex mr-3 gap-4 md:items-center justify-end mb-6 md:flex-row flex-col">
+                                    <button onClick={DesactivateDetailModal}  className="bg-blue-600 flex items-center justify-center gap-2 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white py-3 px-6 rounded" title="Crear usuario">
                                         Volver
                                     </button>
                                 </div>
