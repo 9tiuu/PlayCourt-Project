@@ -20,6 +20,7 @@ const ReservasListView = () =>{
     const [listEstadosReserva, setListEstadosReserva] = useState([]);
     const user = UserAuth();
     const [listUsers, setlistUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getUsers = async () => {
         try {
@@ -63,7 +64,7 @@ const ReservasListView = () =>{
         try {
             const response = await api.get('reservascanchas/');
             setListReservas(response.data);
-
+            console.log("FECHAS QUE LLEGAN:", response.data.map(r => r.reserva_fecha));
         } catch(error){
             console.log(error.message);
         };
@@ -309,13 +310,26 @@ const ReservasListView = () =>{
         setDeleteModal(!deleteModal);
     };
 
+    const filteredReservas = listReservas.filter((res) => {
+
+        const cancha = res.cancha_deportiva?.cancha_nombre?.toLowerCase() || "";
+        const fecha = res.reserva_fecha || "";
+
+        const texto = searchTerm.toLowerCase();
+
+        return (
+            cancha.includes(texto) ||
+            fecha.includes(texto)
+        );
+    });
+
     return(
         <div className="">
             <h2 className="text-2xl font-bold mb-8 text-black dark:text-white uppercase">Listado de Reservas</h2>
 
             <div className="flex md:justify-between md:items-center md:flex-row flex-col md:gap-0 gap-4 mb-6">
                 
-                <form className="md:w-96 h-auto">   
+                <div className="md:w-96 h-auto">   
                     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div className="relative">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -323,12 +337,9 @@ const ReservasListView = () =>{
                                 <path stroke="currentColor" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Search Mockups, Logos..." required />
-                        <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Buscar
-                        </button>
+                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Nombre / fecha de reserva" />
                     </div>
-                </form>
+                </div>
 
                 <button onClick={ActivateAddModal} className="bg-blue-600 flex items-center justify-center gap-2 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white py-3.5 px-6 rounded" title="Editar">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="size-6">
@@ -358,7 +369,7 @@ const ReservasListView = () =>{
 
                     <tbody className="divide-y divide-gray-200 dark:divide-color5 text-gray-800 dark:text-white">
                         {
-                            listReservas.map((c, index) => (
+                            filteredReservas.map((c, index) => (
                                 <tr key={index} className="transition-colors duration-150 text-sm">
                                     <td className="px-6 py-3">{c.id}</td>
                                     <td className="px-6 py-3">{c.cancha_deportiva?.cancha_nombre} Nº{c.cancha_deportiva?.cancha_numero}</td>

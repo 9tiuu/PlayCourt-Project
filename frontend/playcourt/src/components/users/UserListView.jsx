@@ -64,23 +64,30 @@ const UserListView = () =>{
     const addNewUser = async (e) => {
         e.preventDefault();
 
-        if (formData.name.trim() === '' || formData.lastname.trim() === '' || formData.email.trim() === '' || !formData.gender || !formData.rol_id) {
-            setErrors('No pueden haber campos vacíos')
-            console.log(formData);
-            
-        } else {
-            try {
-                await api.post('users/', formData);
-                setMessage('¡Usuario creado con exito!');
-                setFormData({ name: '', lastname: '', email: '', password: '', gender: '', rol_id: '' });
-                getUsers();
-
-            } catch(error) {
-                console.log(error.message);
-                console.log(formData);
-                setErrors('Error al registrar el nuevo usuario');
-            };
+        if (formData.name.trim() === '' || formData.lastname.trim() === '' || formData.email.trim() === '' || formData.password.trim() === '' || !formData.gender || !formData.rol_id) {
+            setErrors('No pueden haber campos vacíos');
+            setTimeout(() => setErrors(''), 3000);
+            return
         };  
+
+        if (formData.password.trim().length < 8) {
+            setErrors('La contraseña debe tener al menos 8 caracteres');
+            setTimeout(() => setErrors(''), 3000);
+            return
+        };
+
+        try {
+            await api.post('users/', formData);
+            setMessage('¡Usuario creado con exito!');
+            setTimeout(() => setMessage(''), 3000);
+            setFormData({ name: '', lastname: '', email: '', password: '', gender: '', rol_id: '' });
+            getUsers();
+
+        } catch(error) {
+            console.log(error.message);
+            setErrors('Error al registrar el nuevo usuario');
+            setTimeout(() => setErrors(''), 3000);
+        };
     };
 
     // Obteniendo los roles actuales y guardando los objetos en el hook -> listUsersRols
@@ -105,12 +112,15 @@ const UserListView = () =>{
         e.preventDefault();
 
         if (formDataUpdate.name.trim() === '' || formDataUpdate.lastname.trim() === '' || formDataUpdate.email.trim() === '' || !formDataUpdate.gender || !formDataUpdate.rol_id) {
-            setErrors('No pueden haber campos vacíos')
+            setErrors('No pueden haber campos vacíos');
+            setTimeout(() => setErrors(''), 3000);
+            return
             
         } else {
             try {
                 await api.put(`users/${idUsuario}/`, formDataUpdate);
                 setMessage('¡Usuario actualizado con exito!');
+                setTimeout(() => setMessage(''), 3000);
                 getUsers();
                 console.log(formDataUpdate);
 
@@ -124,7 +134,6 @@ const UserListView = () =>{
     const EliminarUsuario = async (id) => {
         try {
             await api.delete(`users/${id}/`);
-            setMessage('¡Usuario eliminado con exito!');
             setDeleteUserModal(!deleteUserModal);
             getUsers();
             

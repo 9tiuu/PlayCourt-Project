@@ -16,6 +16,7 @@ import ReservasPage from './pages/reservas/ReservasPage';
 import FormReservationWebPage from './pages/website/FormReservationWebPage';
 
 import ReservationsWebPage from './pages/website/ReservationsWebPage';
+import ReservasPagadasPage from './pages/reservas/ReservasPagadasPage';
 
 
 const Router = createBrowserRouter([
@@ -64,6 +65,14 @@ const Router = createBrowserRouter([
       path: '/system/reservas', element: (
         <ProtectedRoute>
           <ReservasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/reservaspagadas', element: (
+        <ProtectedRoute>
+          <ReservasPagadasPage />
         </ProtectedRoute>
       ) 
     },
