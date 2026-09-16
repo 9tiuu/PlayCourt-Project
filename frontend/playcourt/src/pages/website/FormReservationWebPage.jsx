@@ -53,7 +53,7 @@ const FormReservationWebPage = () => {
         };
     };
 
-    const canchaSeleccionada = listCanchas.find((r) => r.cancha_nombre === cancha_nombre && r.cancha_numero === Number(cancha_numero));
+    const canchaSeleccionada = listCanchas.find((r) => r.nombre === cancha_nombre && r.numero === Number(cancha_numero));
     const estadoPorPagar = listEstadosReserva.find((e) => e.estado_reserva_nombre === 'Por Pagar');
     
 
@@ -68,6 +68,7 @@ const FormReservationWebPage = () => {
         nombre_cliente: '',
         apellido_cliente: '',
         correo_cliente: '',
+        telefono_cliente: '',
         cancha_deportiva_id: '',
         reserva_precio: '',
         reserva_fecha: '',
@@ -90,7 +91,7 @@ const FormReservationWebPage = () => {
     const ReservarCancha = async (e) => {
         e.preventDefault();
 
-        if (formData.nombre_cliente.trim() === '' || formData.apellido_cliente.trim() === '' || formData.correo_cliente.trim() === '' || formData.reserva_fecha.trim() === '' || !formData.horario_reserva_id ) {
+        if (formData.nombre_cliente.trim() === '' || formData.apellido_cliente.trim() === '' || formData.correo_cliente.trim() === '' || formData.telefono_cliente.trim() === '' || formData.reserva_fecha.trim() === '' || !formData.horario_reserva_id ) {
             setErrors('No pueden haber campos vacíos');
             setTimeout(() => setErrors(''), 3000);
             return
@@ -107,6 +108,7 @@ const FormReservationWebPage = () => {
                 nombre_cliente: '',
                 apellido_cliente: '',
                 correo_cliente: '',
+                telefono_cliente: '',
                 cancha_deportiva_id: '',
                 reserva_precio: '',
                 reserva_fecha: '',
@@ -128,11 +130,11 @@ const FormReservationWebPage = () => {
         <>
             <main>
                 <NavWeb />
-                <div className={`w-full h-[45vh] ${canchaSeleccionada?.categoria_cancha.categoria_cancha_nombre === 'Futbol' ? 'bg-futbol' : canchaSeleccionada?.categoria_cancha.categoria_cancha_nombre === 'Baloncesto' ? 'bg-basquet' : canchaSeleccionada?.categoria_cancha.categoria_cancha_nombre === 'Tenis' ? 'bg-tenis' : canchaSeleccionada?.categoria_cancha.categoria_cancha_nombre === 'Padel' ? 'bg-padel' : 'bg-padel'} flex flex-col items-center justify-center text-center gap-2`}>
-                    <span className={`px-4 py-1 mt-4 rounded-full text-xs font-medium ${canchaSeleccionada?.estado_cancha.estado_cancha_nombre === "Disponible" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
-                        {canchaSeleccionada?.estado_cancha.estado_cancha_nombre}
+                <div className={`w-full h-[45vh] ${canchaSeleccionada?.categoria_id.nombre === 'Futbol' ? 'bg-futbol' : canchaSeleccionada?.categoria_id.nombre === 'Baloncesto' ? 'bg-basquet' : canchaSeleccionada?.categoria_id._nombre === 'Tenis' ? 'bg-tenis' : 'bg-padel'} flex flex-col items-center justify-center text-center gap-2`}>
+                    <span className={`px-4 py-1 mt-4 rounded-full text-xs font-medium ${canchaSeleccionada?.estado_id.nombre === "Disponible" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
+                        {canchaSeleccionada?.estado_id.nombre}
                     </span>
-                    <h2 className='text-4xl uppercase text-white font-bold'>{canchaSeleccionada?.cancha_nombre} Nº{canchaSeleccionada?.cancha_numero}</h2>
+                    <h2 className='text-4xl uppercase text-white font-bold'>{canchaSeleccionada?.nombre} Nº{canchaSeleccionada?.numero}</h2>
                     <Link to={'/reservas'} className="text-white cursor-pointer hover:underline">
                         ↩︎ Volver a ver canchas deportivas disponibles
                     </Link>
@@ -142,7 +144,7 @@ const FormReservationWebPage = () => {
                     <div className='w-full flex md:flex-row flex-col justify-center gap-4'>
 
                         {
-                            canchaSeleccionada?.estado_cancha.estado_cancha_nombre === "Disponible" ? (
+                            canchaSeleccionada?.estado_id.nombre === "Disponible" ? (
                                 <>
                                 <div className="md:w-[30rem] p-6 rounded-lg bg-white shadow-xl">
                                     <h2 className='text-2xl uppercase font-bold mb-1 text-black'>¡Importante!</h2>
@@ -151,15 +153,17 @@ const FormReservationWebPage = () => {
                                         <li><b>Precio total:</b> ${canchaSeleccionada?.cancha_precio}</li>
                                     </ul>
 
-                                    <p className='text-black mt-1'>Una vez realizado su reserva, <b>tendrá 20 min para solicitar el uso de la cancha deportiva</b> según la fecha seleccionada, de lo contrario su reserva quedará como expirada.</p>
+                                    <p className='text-black mt-1 text-sm'>Una vez llegue el día de su reserva <b>tendrá que realizar el pago antes del horario seleccionado</b>, una vez sobrepasado su tiempo, se le llamará a su contacto telefónico para confirmar el uso de la cancha reservada. <b className='font-semibold text-red-600'>Si no recibimos una respuesta dentro de las 24 horas posteriores a la finalización de su tiempo reservado, no se considerará una devolución monetaria.</b></p>
 
                                     <p className='h-0.5 w-full bg-gray-300 my-4 rounded-full'></p>
 
-                                    <p className='text-black '>Por favor, antes de retirarse del lugar, recuerde depositar su basura en los contenedores correspondientes.</p>
+                                    <p className='text-black text-sm'>Por favor, antes de retirarse del lugar, recuerde depositar su basura en los contenedores correspondientes.</p>
                                     
                                     <p className='h-0.5 w-full bg-gray-300 my-4 rounded-full'></p>
 
                                     <p className='text-black font-semibold'>Información de contacto</p>
+
+                                    <p className='text-black mt-1 text-sm'>¡Contactanos para ayudarte aclarar tus dudas!</p>
 
                                     <div className="flex items-center mb-3 p-4 gap-2 border rounded-lg mt-4 border-blue-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope text-blue-600" viewBox="0 0 16 16">
@@ -196,6 +200,11 @@ const FormReservationWebPage = () => {
                                         <div>
                                             <label className="block font-semibold mb-1">Correo</label>
                                             <input name='correo_cliente' value={formData.correo_cliente} onChange={handleChange} id='correo_cliente' type="email" className="w-full border p-2 rounded" placeholder='ejemplo@gmail.com' />
+                                        </div>
+
+                                        <div>
+                                            <label className="block font-semibold mb-1">Teléfono</label>
+                                            <input name='telefono_cliente' value={formData.telefono_cliente} onChange={handleChange} id='telefono_cliente' type="text" className="w-full border p-2 rounded" placeholder='+56900000000' />
                                         </div>
 
                                         <div>

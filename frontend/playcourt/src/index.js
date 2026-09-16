@@ -17,6 +17,8 @@ import FormReservationWebPage from './pages/website/FormReservationWebPage';
 
 import ReservationsWebPage from './pages/website/ReservationsWebPage';
 import ReservasPagadasPage from './pages/reservas/ReservasPagadasPage';
+import MantenimientoCanchasPage from './pages/mantenimiento/MantenimientoCanchasPage';
+import GastosPage from './pages/gastos/GastosPage';
 
 
 const Router = createBrowserRouter([
@@ -73,6 +75,22 @@ const Router = createBrowserRouter([
       path: '/system/reservaspagadas', element: (
         <ProtectedRoute>
           <ReservasPagadasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/mantenimiento', element: (
+        <ProtectedRoute>
+          <MantenimientoCanchasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/gastos', element: (
+        <ProtectedRoute>
+          <GastosPage />
         </ProtectedRoute>
       ) 
     },

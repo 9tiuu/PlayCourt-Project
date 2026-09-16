@@ -11,6 +11,7 @@ const UserListView = () =>{
     const [message, setMessage] = useState('');
     const [errors, setErrors] = useState('');
     const [idUsuario, setIdUsuario] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     // Formulario para Crear usuarios
     const [formData, setFormData] = useState({
@@ -211,13 +212,27 @@ const UserListView = () =>{
         setDeleteUserModal(!deleteUserModal);
     };
 
+    const filteredUsuarios = listUsers.filter((res) => {
+        const nombre = res.name?.toLowerCase() || "";
+        const apellido = res.lastname?.toLowerCase() || "";
+        const rol = res.rol?.namerol.toLowerCase() || "";
+
+        const texto = searchTerm.toLowerCase();
+
+        return (
+            nombre.includes(texto) ||
+            apellido.includes(texto) ||
+            rol.includes(texto)
+        );
+    });
+
     return(
         <div className="">
             <h2 className="text-2xl font-bold mb-8 text-black dark:text-white uppercase">Listado de Usuarios</h2>
 
             <div className="flex md:justify-between md:items-center md:flex-row flex-col md:gap-0 gap-4 mb-6">
                 
-                <form className="md:w-96 h-auto">   
+                <div className="md:w-96 h-auto">   
                     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div className="relative">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -225,12 +240,9 @@ const UserListView = () =>{
                                 <path stroke="currentColor" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Search Mockups, Logos..." required />
-                        <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Buscar
-                        </button>
+                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Nombre / Apellido o Rol" />
                     </div>
-                </form>
+                </div>
 
                 <button onClick={ActivateAddUserModal} className="bg-blue-600 flex items-center justify-center gap-2 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white py-3.5 px-6 rounded" title="Editar">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="size-6">
@@ -246,26 +258,26 @@ const UserListView = () =>{
                 <table className="min-w-full border border-gray-200 dark:border-color5">
                     <thead className="bg-gray-100 dark:bg-color2 dark:text-white text-gray-700 text-sm">
                         <tr>
-                            <th className="px-6 py-3 text-left font-bold">ID</th>
-                            <th className="px-6 py-3 text-left font-bold">Nombre</th>
-                            <th className="px-6 py-3 text-left font-bold">Apellido</th>
-                            <th className="px-6 py-3 text-left font-bold">Correo electrónico</th>
-                            <th className="px-6 py-3 text-left font-bold">Género</th>
-                            <th className="px-6 py-3 text-left font-bold">Rol</th>
-                            <th className="px-6 py-3 text-left font-bold">Acciones</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">ID</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Nombre</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Apellido</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Correo electrónico</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Género</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Rol</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Acciones</th>
                         </tr>
                     </thead>
 
                     <tbody className="divide-y divide-gray-200 dark:divide-color5 text-gray-800 dark:text-white">
                         {
-                            listUsers.map((user, index) => (
+                            filteredUsuarios.map((user, index) => (
                                 <tr key={index} className="transition-colors duration-150 text-sm">
-                                    <td className="px-6 py-3">{user.id}</td>
-                                    <td className="px-6 py-3">{user.name}</td>
-                                    <td className="px-6 py-3">{user.lastname}</td>
-                                    <td className="px-6 py-3">{user.email}</td>
-                                    <td className="px-6 py-3">{user.gender}</td>
-                                    <td className="px-6 py-3">
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{user.id}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{user.name}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{user.lastname}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{user.email}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{user.gender}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.rol?.namerol === "Administrador" ? "bg-blue-200 text-blue-800" : user.rol?.namerol === "Operaciones" ? "bg-orange-100 text-orange-700" : user.rol?.namerol === "Finanzas" ? "bg-green-100 text-green-700" : "bg-gray-100 text-black"}`}>
                                             {user.rol?.namerol}
                                         </span>

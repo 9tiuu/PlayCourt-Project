@@ -40,6 +40,7 @@ const ReservasListView = () =>{
         nombre_cliente: '',
         apellido_cliente: '',
         correo_cliente: '',
+        telefono_cliente: '',
         cancha_deportiva_id: '',
         reserva_precio: '',
         reserva_fecha: '',
@@ -52,6 +53,7 @@ const ReservasListView = () =>{
         nombre_cliente: '',
         apellido_cliente: '',
         correo_cliente: '',
+        telefono_cliente: '',
         cancha_deportiva_id: '',
         reserva_precio: '',
         reserva_fecha: '',
@@ -64,7 +66,6 @@ const ReservasListView = () =>{
         try {
             const response = await api.get('reservascanchas/');
             setListReservas(response.data);
-            console.log("FECHAS QUE LLEGAN:", response.data.map(r => r.reserva_fecha));
         } catch(error){
             console.log(error.message);
         };
@@ -140,6 +141,7 @@ const ReservasListView = () =>{
         if (formData.nombre_cliente.trim() === '' || 
             formData.apellido_cliente.trim() === '' || 
             formData.correo_cliente.trim() === '' || 
+            formData.telefono_cliente.trim() === '' || 
             !formData.cancha_deportiva_id || 
             !formData.reserva_precio || 
             formData.reserva_fecha.trim() === '' ||
@@ -160,6 +162,7 @@ const ReservasListView = () =>{
                 nombre_cliente: '',
                 apellido_cliente: '',
                 correo_cliente: '',
+                telefono_cliente: '',
                 cancha_deportiva_id: '',
                 reserva_precio: '',
                 reserva_fecha: '',
@@ -184,6 +187,7 @@ const ReservasListView = () =>{
         if (formDataUpdate.nombre_cliente.trim() === '' || 
             formDataUpdate.apellido_cliente.trim() === '' || 
             formDataUpdate.correo_cliente.trim() === '' || 
+            formDataUpdate.telefono_cliente.trim() === '' || 
             !formDataUpdate.cancha_deportiva_id || 
             !formDataUpdate.reserva_precio || 
             formDataUpdate.reserva_fecha.trim() === '' ||
@@ -256,6 +260,7 @@ const ReservasListView = () =>{
                 nombre_cliente: reservaSeleccionada.nombre_cliente || '',
                 apellido_cliente: reservaSeleccionada.apellido_cliente || '',
                 correo_cliente: reservaSeleccionada.correo_cliente || '',
+                telefono_cliente: reservaSeleccionada.telefono_cliente || '',
                 cancha_deportiva_id: reservaSeleccionada.cancha_deportiva?.id || '',
                 reserva_precio: reservaSeleccionada.reserva_precio || '',
                 reserva_fecha: reservaSeleccionada.reserva_fecha || '',
@@ -283,6 +288,7 @@ const ReservasListView = () =>{
                 nombre_cliente: reservaSeleccionada.nombre_cliente || '',
                 apellido_cliente: reservaSeleccionada.apellido_cliente || '',
                 correo_cliente: reservaSeleccionada.correo_cliente || '',
+                telefono_cliente: reservaSeleccionada.telefono_cliente || '',
                 cancha_deportiva_id: reservaSeleccionada.cancha_deportiva?.id || '',
                 reserva_precio: reservaSeleccionada.reserva_precio || '',
                 reserva_fecha: reservaSeleccionada.reserva_fecha || '',
@@ -312,6 +318,8 @@ const ReservasListView = () =>{
 
     const filteredReservas = listReservas.filter((res) => {
 
+        const nombre_cliente = res.nombre_cliente.toLowerCase() || "";
+        const apellido_cliente = res.apellido_cliente.toLowerCase() || "";
         const cancha = res.cancha_deportiva?.cancha_nombre?.toLowerCase() || "";
         const fecha = res.reserva_fecha || "";
 
@@ -319,7 +327,9 @@ const ReservasListView = () =>{
 
         return (
             cancha.includes(texto) ||
-            fecha.includes(texto)
+            fecha.includes(texto) ||
+            nombre_cliente.includes(texto) ||
+            apellido_cliente.includes(texto)
         );
     });
 
@@ -337,7 +347,7 @@ const ReservasListView = () =>{
                                 <path stroke="currentColor" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Nombre / fecha de reserva" />
+                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Cancha / fecha o Cliente" />
                     </div>
                 </div>
 
@@ -355,15 +365,15 @@ const ReservasListView = () =>{
                 <table className="min-w-full border border-gray-200 dark:border-color5">
                     <thead className="bg-gray-100 dark:bg-color2 dark:text-white text-gray-700 text-sm">
                         <tr>
-                            <th className="px-6 py-3 text-left font-bold">ID</th>
-                            <th className="px-6 py-3 text-left font-bold">Cancha deportiva</th>
-                            {/* <th className="px-6 py-3 text-left font-bold">Nº Cancha</th> */}
-                            <th className="px-6 py-3 text-left font-bold">Precio</th>
-                            <th className="px-6 py-3 text-left font-bold">Fecha de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Hora de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Hora de expiración</th>
-                            <th className="px-6 py-3 text-left font-bold">Estado de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Acciones</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">ID</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Cancha deportiva</th>
+                            {/* <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Nº Cancha</th> */}
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Precio</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Fecha de reserva</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Hora de reserva</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Cliente</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Estado de reserva</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Acciones</th>
                         </tr>
                     </thead>
 
@@ -371,15 +381,15 @@ const ReservasListView = () =>{
                         {
                             filteredReservas.map((c, index) => (
                                 <tr key={index} className="transition-colors duration-150 text-sm">
-                                    <td className="px-6 py-3">{c.id}</td>
-                                    <td className="px-6 py-3">{c.cancha_deportiva?.cancha_nombre} Nº{c.cancha_deportiva?.cancha_numero}</td>
-                                    {/* <td className="px-6 py-3">{c.cancha_deportiva?.cancha_numero}</td> */}
-                                    <td className="px-6 py-3">${c.reserva_precio}</td>
-                                    <td className="px-6 py-3">{c.reserva_fecha}</td>
-                                    <td className="px-6 py-3">{c.horario_reserva?.horario_reserva_hora} - {c.horario_reserva?.horario_reserva_termino}</td>
-                                    <td className="px-6 py-3">{c.horario_reserva?.horario_reserva_expiracion}</td>
-                                    <td className="px-6 py-3">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.estado_reserva?.estado_reserva_nombre === "Por Pagar" ? "bg-orange-200 text-orange-600" : c.estado_reserva?.estado_reserva_nombre === "Pagado" ? "bg-green-100 text-green-700" : c.estado_reserva?.estado_reserva_nombre === "Cancelado" ? "bg-red-100 text-red-700" : "bg-gray-100 text-black"}`}>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.id}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.cancha_deportiva?.cancha_nombre} Nº{c.cancha_deportiva?.cancha_numero}</td>
+                                    {/* <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.cancha_deportiva?.cancha_numero}</td> */}
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">${c.reserva_precio}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.reserva_fecha}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.horario_reserva?.horario_reserva_hora} - {c.horario_reserva?.horario_reserva_termino}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.nombre_cliente} {c.apellido_cliente}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">
+                                        <span className={`px-2 w-full py-1 rounded-full text-xs font-medium ${c.estado_reserva?.estado_reserva_nombre === "Por Pagar" ? "bg-orange-200 text-orange-600" : c.estado_reserva?.estado_reserva_nombre === "Pagado - Confirmado" ? "bg-green-100 text-green-700" : c.estado_reserva?.estado_reserva_nombre === "Cancelado" ? "bg-red-100 text-red-700" : c.estado_reserva?.estado_reserva_nombre === "Exipirado - Por confirmar" ? "bg-blue-100 text-blue-700" :  "bg-purple-200 text-purple-700"}`}>
                                             {c.estado_reserva?.estado_reserva_nombre}
                                         </span>
                                     </td>
@@ -439,6 +449,11 @@ const ReservasListView = () =>{
                                 <div className="relative w-full mb-3">
                                     <input name='correo_cliente' value={formData.correo_cliente} onChange={handleChange} type="email" id="correo_cliente" className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-1 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder={''} />
                                     <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Correo cliente</label>
+                                </div>
+
+                                <div className="relative w-full mb-3">
+                                    <input name='telefono_cliente' value={formData.telefono_cliente} onChange={handleChange} type="text" id="telefono_cliente" className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-1 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder={''} />
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Teléfono cliente</label>
                                 </div>
                                 
                                 <select name='cancha_deportiva_id' value={formData.cancha_deportiva_id} onChange={handleChange} id="cancha_deportiva_id" className="bg-white border mb-3 border-[#7776A8] text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-color2 dark:border-[#7776A8] dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600">
@@ -516,6 +531,11 @@ const ReservasListView = () =>{
                                 <div className="relative w-full mb-3">
                                     <input name='correo_cliente' value={formDataUpdate.correo_cliente} onChange={handleChangeUpdate} type="email" id="correo_cliente" className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-1 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder={''} />
                                     <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Correo cliente</label>
+                                </div>
+
+                                <div className="relative w-full mb-3">
+                                    <input name='telefono_cliente' value={formDataUpdate.telefono_cliente} onChange={handleChangeUpdate} type="text" id="telefono_cliente" className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-1 border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder={''} />
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Teléfono cliente</label>
                                 </div>
                                 
                                 <select name='cancha_deportiva_id' value={formDataUpdate.cancha_deportiva_id} onChange={handleChangeUpdate} id="cancha_deportiva_id" className="bg-white border mb-3 border-[#7776A8] text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-color2 dark:border-[#7776A8] dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600">
@@ -601,6 +621,14 @@ const ReservasListView = () =>{
                                     </p>
                                     
                                     <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Correo cliente</label>
+                                </div>
+
+                                <div className="relative w-full mb-3">
+                                    <p className='className="block px-2.5 pb-2.5 pt-4 w-full text-sm dark:text-white bg-transparent rounded-lg border-[1px] border-[#7776A8] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"'>
+                                        {formDataUpdate.telefono_cliente}
+                                    </p>
+                                    
+                                    <label className="absolute text-sm text-[#7776A8] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] dark:bg-color2 bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Teléfono cliente</label>
                                 </div>
 
                                 <div className="relative w-full mb-3">

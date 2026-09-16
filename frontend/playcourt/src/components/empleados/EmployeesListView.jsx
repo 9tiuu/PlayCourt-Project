@@ -14,6 +14,7 @@ const EmployeesListView = () =>{
     const [createdByUser, setCreatedByUser] = useState([null]);
     const [idEmpleado, setIdEmpleado] = useState('');
     const [IdEmpleadoOriginal, setIdEmpleadoOriginal] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         setCreatedByUser(idUser);
@@ -269,13 +270,31 @@ const EmployeesListView = () =>{
         setDeleteaModal(!deleteModal);
     };
 
+    const filteredEmpleados = listEmpleados.filter((res) => {
+        const nombre = res.nombre?.toLowerCase() || "";
+        const apellidoP = res.apellido_paterno?.toLowerCase() || "";
+        const apellidoM = res.apellido_materno?.toLowerCase() || "";
+        const cargo = res.cargo?.toLowerCase() || "";
+        const rut = res.rut?.toLowerCase() || "";
+
+        const texto = searchTerm.toLowerCase();
+
+        return (
+            nombre.includes(texto) ||
+            apellidoP.includes(texto) ||
+            apellidoM.includes(texto) ||
+            cargo.includes(texto) ||
+            rut.includes(texto)
+        );
+    });
+
     return(
         <div className="">
             <h2 className="text-2xl font-bold mb-8 text-black dark:text-white uppercase">Listado del Empleados</h2>
 
             <div className="flex md:justify-between md:items-center md:flex-row flex-col md:gap-0 gap-4 mb-6">
                 
-                <form className="md:w-96 h-auto">   
+                <div className="md:w-96 h-auto">   
                     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div className="relative">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -283,12 +302,9 @@ const EmployeesListView = () =>{
                                 <path stroke="currentColor" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Search Mockups, Logos..." required />
-                        <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Buscar
-                        </button>
+                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-600 focus:border-blue-600 dark:bg-color4 dark:border-color5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600" placeholder="Nombre / Apellidos / Rut o cargo" />
                     </div>
-                </form>
+                </div>
 
                 <button onClick={ActivateAddModal} className="bg-blue-600 flex items-center justify-center gap-2 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white py-3.5 px-6 rounded" title="Editar">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="size-6">
@@ -304,30 +320,30 @@ const EmployeesListView = () =>{
                 <table className="min-w-full border border-gray-200 dark:border-color5">
                     <thead className="bg-gray-100 dark:bg-color2 dark:text-white text-gray-700 text-sm">
                         <tr>
-                            <th className="px-6 py-3 text-left font-bold">ID</th>
-                            <th className="px-6 py-3 text-left font-bold">Nombre</th>
-                            <th className="px-6 py-3 text-left font-bold">Apellido paterno</th>
-                            <th className="px-6 py-3 text-left font-bold">Apellido materno</th>
-                            <th className="px-6 py-3 text-left font-bold">RUT</th>
-                            <th className="px-6 py-3 text-left font-bold">Cargo</th>
-                            <th className="px-6 py-3 text-left font-bold">Correo</th>
-                            <th className="px-6 py-3 text-left font-bold">Celular</th>
-                            <th className="px-6 py-3 text-left font-bold">Acciones</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">ID</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Nombre</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Apellido paterno</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Apellido materno</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">RUT</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Cargo</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Correo</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Celular</th>
+                            <th className="px-6 py-3 text-left font-bold whitespace-nowrap md:whitespace-normal">Acciones</th>
                         </tr>
                     </thead>
 
                     <tbody className="divide-y divide-gray-200 dark:divide-color5 text-gray-800 dark:text-white">
                         {
-                            listEmpleados.map((c, index) => (
+                            filteredEmpleados.map((c, index) => (
                                 <tr key={index} className="transition-colors duration-150 text-sm">
-                                    <td className="px-6 py-3">{c.id}</td>
-                                    <td className="px-6 py-3">{c.nombre}</td>
-                                    <td className="px-6 py-3">{c.apellido_paterno}</td>
-                                    <td className="px-6 py-3">{c.apellido_materno}</td>
-                                    <td className="px-6 py-3">{c.rut}</td>
-                                    <td className="px-6 py-3">{c.cargo}</td>
-                                    <td className="px-6 py-3">{c.correo}</td>
-                                    <td className="px-6 py-3">{c.celular}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.id}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.nombre}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.apellido_paterno}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.apellido_materno}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.rut}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.cargo}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.correo}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.celular}</td>
 
                                     <td className='px-6 py-3 flex gap-2'>
                                         <button onClick={()=>ActivateEditModal(c.id, c.usuario?.id)} className="bg-blue-600 hover:bg-blue-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white p-2 rounded" title="Actualizar">

@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas, Empleados, HorariosReserva, EstadosReserva, ReservasCanchas
+from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas, Empleados, HorariosReserva, EstadosReserva, ReservasCanchas, EstadosMantencion, MantenimientoCanchas, CategoriasGastos, EstadosGastos, Gastos
 from rest_framework.exceptions import ValidationError
 
 class UserRolSerializer(serializers.ModelSerializer):
@@ -21,10 +21,9 @@ class MainUserCreateSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'lastname', 'email', 'rol', 'rol_id', 'gender', 'password')
 
     def create(self, validated_data):
-        # Aquí usamos create_user para que Django maneje password e is_active
         user = MainUser.objects.create_user(
             # el id se creo automaticamente
-            username=validated_data['email'],  # username = email
+            username=validated_data['email'],
             email=validated_data['email'],
             password=validated_data['password'],
             name=validated_data.get('name', ''),
@@ -195,3 +194,58 @@ class ReservasCanchaSerializer(serializers.ModelSerializer):
             })
 
         return data
+    
+class EstadosMantencionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadosMantencion
+        fields = '__all__'
+
+class MantenimientoCanchasSerializer(serializers.ModelSerializer):
+    cancha_deportiva = CanchasSerializer(read_only=True)
+    cancha_deportiva_id = serializers.PrimaryKeyRelatedField(
+        queryset=Canchas.objects.all(), source='cancha_deportiva', write_only=True
+    )
+
+    estado_mantencion = EstadosMantencionSerializer(read_only=True)
+    estado_mantencion_id = serializers.PrimaryKeyRelatedField(
+        queryset=EstadosMantencion.objects.all(), source='estado_mantencion', write_only=True
+    )
+
+    usuario = MainUserCreateSerializer(read_only=True)
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=MainUser.objects.all(), source='usuario', write_only=True, allow_null=True,
+    )
+
+    class Meta:
+        model = MantenimientoCanchas
+        fields = '__all__'
+
+class CategoriasGastosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoriasGastos
+        fields = '__all__'
+
+class EstadosGastosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadosGastos
+        fields = '__all__'
+
+class GastosSerializer(serializers.ModelSerializer):
+    categoria_gastos = CategoriasGastosSerializer(read_only=True)
+    categoria_gastos_id = serializers.PrimaryKeyRelatedField(
+        queryset=CategoriasGastos.objects.all(), source='categoria_gastos', write_only=True
+    )
+
+    estados_gastos = EstadosGastosSerializer(read_only=True)
+    estados_gastos_id = serializers.PrimaryKeyRelatedField(
+        queryset=EstadosGastos.objects.all(), source='estados_gastos', write_only=True
+    )
+
+    usuario = MainUserCreateSerializer(read_only=True)
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=MainUser.objects.all(), source='usuario', write_only=True, allow_null=True,
+    )
+
+    class Meta:
+        model = Gastos
+        fields = '__all__'

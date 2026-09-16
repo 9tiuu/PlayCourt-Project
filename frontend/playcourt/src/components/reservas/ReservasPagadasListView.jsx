@@ -107,7 +107,7 @@ const ReservasPagadasListView = () =>{
     };
 
     const filteredReservas = listReservas
-        .filter(res => res.estado_reserva?.estado_reserva_nombre === "Pagado")
+        .filter(res => res.estado_reserva?.estado_reserva_nombre === "Pagado" || res.estado_reserva?.estado_reserva_nombre === "Pagado - Confirmado")
         .filter((res) => {
             const cancha = res.cancha_deportiva?.cancha_nombre?.toLowerCase() || "";
             const fecha = res.reserva_fecha || "";
@@ -140,15 +140,15 @@ const ReservasPagadasListView = () =>{
                 <table className="min-w-full border border-gray-200 dark:border-color5">
                     <thead className="bg-gray-100 dark:bg-color2 dark:text-white text-gray-700 text-sm">
                         <tr>
-                            <th className="px-6 py-3 text-left font-bold">ID</th>
-                            <th className="px-6 py-3 text-left font-bold">Cancha deportiva</th>
-                            {/* <th className="px-6 py-3 text-left font-bold">Nº Cancha</th> */}
-                            <th className="px-6 py-3 text-left font-bold">Precio</th>
-                            <th className="px-6 py-3 text-left font-bold">Fecha de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Hora de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Hora de expiración</th>
-                            <th className="px-6 py-3 text-left font-bold">Estado de reserva</th>
-                            <th className="px-6 py-3 text-left font-bold">Acciones</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">ID</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Cancha deportiva</th>
+                            {/* <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Nº Cancha</th> */}
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Precio</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Fecha de reserva</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Hora de reserva</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Hora de expiración</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Estado de reserva</th>
+                            <th className="px-6 py-3 whitespace-nowrap md:whitespace-normal text-left font-bold">Acciones</th>
                         </tr>
                     </thead>
 
@@ -156,20 +156,20 @@ const ReservasPagadasListView = () =>{
                         {
                             filteredReservas.map((c, index) => (
                                 <tr key={index} className="transition-colors duration-150 text-sm">
-                                    <td className="px-6 py-3">{c.id}</td>
-                                    <td className="px-6 py-3">{c.cancha_deportiva?.cancha_nombre} Nº{c.cancha_deportiva?.cancha_numero}</td>
-                                    {/* <td className="px-6 py-3">{c.cancha_deportiva?.cancha_numero}</td> */}
-                                    <td className="px-6 py-3">${c.reserva_precio}</td>
-                                    <td className="px-6 py-3">{c.reserva_fecha}</td>
-                                    <td className="px-6 py-3">{c.horario_reserva?.horario_reserva_hora} - {c.horario_reserva?.horario_reserva_termino}</td>
-                                    <td className="px-6 py-3">{c.horario_reserva?.horario_reserva_expiracion}</td>
-                                    <td className="px-6 py-3">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.estado_reserva?.estado_reserva_nombre === "Por Pagar" ? "bg-orange-200 text-orange-600" : c.estado_reserva?.estado_reserva_nombre === "Pagado" ? "bg-green-100 text-green-700" : c.estado_reserva?.estado_reserva_nombre === "Cancelado" ? "bg-red-100 text-red-700" : "bg-gray-100 text-black"}`}>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.id}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.cancha_deportiva?.cancha_nombre} Nº{c.cancha_deportiva?.cancha_numero}</td>
+                                    {/* <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.cancha_deportiva?.cancha_numero}</td> */}
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">${c.reserva_precio}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.reserva_fecha}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.horario_reserva?.horario_reserva_hora} - {c.horario_reserva?.horario_reserva_termino}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">{c.horario_reserva?.horario_reserva_expiracion}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap md:whitespace-normal">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.estado_reserva?.estado_reserva_nombre === "Pagado - Confirmado" ? "bg-green-100 text-green-700" : c.estado_reserva?.estado_reserva_nombre === "Pagado" ? "bg-green-100 text-green-700" : c.estado_reserva?.estado_reserva_nombre === "Cancelado" ? "bg-red-100 text-red-700" : "bg-gray-100 text-black"}`}>
                                             {c.estado_reserva?.estado_reserva_nombre}
                                         </span>
                                     </td>
 
-                                    <td className='px-6 py-3 flex gap-2'>
+                                    <td className='px-6 py-3 whitespace-nowrap md:whitespace-normal flex gap-2'>
                                         <button onClick={()=>ActivateDetailModal(c.id)} className="bg-green-600 hover:bg-green-700 hover:duration-300 duration-300 hover:scale-[105%] transition hover:transition text-white p-2 rounded" title="Actualizar">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-info-circle text-white" viewBox="0 0 16 16">
                                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>

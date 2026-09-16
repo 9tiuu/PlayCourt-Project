@@ -89,9 +89,55 @@ class ReservasCanchas(models.Model):
     nombre_cliente = models.CharField(max_length=50, null=True, blank=True)
     apellido_cliente = models.CharField(max_length=50, null=True, blank=True)
     correo_cliente = models.CharField(max_length=50, null=True, blank=True)
+    telefono_cliente = models.CharField(max_length=50, null=True, blank=True)
     cancha_deportiva = models.ForeignKey(Canchas, on_delete=models.SET_NULL, null=True, blank=True)
     reserva_precio = models.IntegerField()
     reserva_fecha = models.DateField(null=True, blank=True) # null y vacios temporales
     horario_reserva = models.ForeignKey(HorariosReserva, on_delete=models.SET_NULL, null=True, blank=True)
     estado_reserva = models.ForeignKey(EstadosReserva, on_delete=models.SET_NULL, null=True, blank=True)
+    usuario = models.ForeignKey(MainUser, on_delete=models.SET_NULL, null=True, blank=True)
+
+class EstadosMantencion(models.Model):
+    # estado_mantencion_id se crea automaticamente
+    estado_mantencion_nombre = models.CharField(max_length=50, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f'{self.estado_mantencion_nombre}'
+
+class MantenimientoCanchas(models.Model):
+    # mantenimiento_id se crea automatico
+    cancha_deportiva = models.ForeignKey(Canchas, on_delete=models.SET_NULL, null=True, blank=True)
+    mantencion_fecha = models.DateField(auto_now=False, auto_now_add=False)
+    mantencion_descripcion = models.CharField(max_length=250, null=True, blank=True)
+    estado_mantencion = models.ForeignKey(EstadosMantencion, on_delete=models.SET_NULL, null=True, blank=True)
+    mantencion_proxima_fecha = models.DateField(auto_now=False, auto_now_add=False)
+    mantencion_observaciones = models.CharField(max_length=250, null=True, blank=True)
+    usuario = models.ForeignKey(MainUser, on_delete=models.SET_NULL, null=True, blank=True)
+
+class CategoriasGastos(models.Model):
+    # categoria_gastos_id se crea automaticamente
+    categoria_gastos_nombre = models.CharField(max_length=50, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f'{self.categoria_gastos_nombre}'
+
+class EstadosGastos(models.Model):
+    # estado_mantencion_id se crea automaticamente
+    estado_gastos_nombre = models.CharField(max_length=50, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f'{self.estado_gastos_nombre}'
+
+class Gastos(models.Model):
+    # gastos_id se crea automatico
+    categoria_gastos = models.ForeignKey(CategoriasGastos, on_delete=models.SET_NULL, null=True, blank=True)
+    gastos_fecha = models.DateField(auto_now=False, auto_now_add=False)
+    gastos_descripcion = models.CharField(max_length=250, null=True, blank=True)
+    gastos_proveedor = models.CharField(max_length=250, null=True, blank=True)
+    gastos_factura = models.CharField(max_length=250, null=True, blank=True)
+    gastos_neto = models.DecimalField(max_digits=12, decimal_places=2)
+    gastos_iva = models.DecimalField(max_digits=12, decimal_places=2)
+    gastos_total = models.DecimalField(max_digits=12, decimal_places=2)
+    gastos_mediodepago = models.CharField(max_length=250, null=True, blank=True)
+    estados_gastos = models.ForeignKey(EstadosGastos, on_delete=models.SET_NULL, null=True, blank=True)
     usuario = models.ForeignKey(MainUser, on_delete=models.SET_NULL, null=True, blank=True)
