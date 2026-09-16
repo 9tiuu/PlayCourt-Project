@@ -1,14 +1,15 @@
 # from django.shortcuts import render
 from .permissions import IsAdminRole
 from rest_framework import generics
-from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas
-from .serializers import MainUserCreateSerializer, UserRolSerializer, MyTokenObtainPairSerializer, EstadosCanchaSerializer, CategoriasCanchaSerializer, CanchasSerializer
+from .models import MainUser, UserRol, EstadosCancha, CategoriasCancha, Canchas, Empleados, HorariosReserva, EstadosReserva, ReservasCanchas, MantenimientoCanchas, EstadosMantencion, CategoriasGastos, EstadosGastos, Gastos
+from .serializers import MainUserCreateSerializer, UserUpdateSerializer, UserRolSerializer, MyTokenObtainPairSerializer, EstadosCanchaSerializer, CategoriasCanchaSerializer, CanchasSerializer, EmpleadosSerializer, HorariosReservaSerializer, EstadosReservaSerializer, ReservasCanchaSerializer, MantenimientoCanchasSerializer, EstadosMantencionSerializer, CategoriasGastosSerializer,EstadosGastosSerializer, GastosSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 # from core.permissions import IsAdminRole
 
+#-------------Usuarios-------------------------------
 class CreateUserRolView(generics.ListCreateAPIView):
     queryset = UserRol.objects.all()
     serializer_class = UserRolSerializer
@@ -16,8 +17,13 @@ class CreateUserRolView(generics.ListCreateAPIView):
 class CreateUsersView(generics.ListCreateAPIView):
     queryset = MainUser.objects.all()
     serializer_class = MainUserCreateSerializer
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MainUser.objects.all()
+    serializer_class = UserUpdateSerializer
     # permission_classes = [IsAuthenticated, IsAdminRole]
 
+#-------------Canchas-------------------------------
 class EstadosCanchaView(generics.ListCreateAPIView):
     queryset = EstadosCancha.objects.all()
     serializer_class = EstadosCanchaSerializer
@@ -35,6 +41,81 @@ class CanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Canchas.objects.all()
     serializer_class = CanchasSerializer
 
+#-------------Empleados-------------------------------
+class EmpleadosCreateView(generics.ListCreateAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+
+class EmpleadosDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+
+#-------------Reservas-------------------------------
+class HorariosReservaCreateView(generics.ListCreateAPIView):
+    queryset = HorariosReserva.objects.all()
+    serializer_class = HorariosReservaSerializer
+
+class HorariosReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HorariosReserva.objects.all()
+    serializer_class = HorariosReservaSerializer
+
+class EstadosReservaCreateView(generics.ListCreateAPIView):
+    queryset = EstadosReserva.objects.all()
+    serializer_class = EstadosReservaSerializer
+
+class EstadosReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EstadosReserva.objects.all()
+    serializer_class = EstadosReservaSerializer
+
+class ReservasCanchasCreateView(generics.ListCreateAPIView):
+    queryset = ReservasCanchas.objects.all()
+    serializer_class = ReservasCanchaSerializer
+
+class ReservasCanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ReservasCanchas.objects.all()
+    serializer_class = ReservasCanchaSerializer
+
+#-------------Mantenciones-------------------------------
+class EstadoMantenimientoCreateView(generics.ListCreateAPIView):
+    queryset = EstadosMantencion.objects.all()
+    serializer_class = EstadosMantencionSerializer
+
+class EstadoMantenimientoDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EstadosMantencion.objects.all()
+    serializer_class = EstadosMantencionSerializer
+
+class MantenimientoCanchasCreateView(generics.ListCreateAPIView):
+    queryset = MantenimientoCanchas.objects.all()
+    serializer_class = MantenimientoCanchasSerializer
+
+class MantenimientoCanchasDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MantenimientoCanchas.objects.all()
+    serializer_class = MantenimientoCanchasSerializer    
+
+#-------------Gastos-------------------------------
+class CategoriasGastosCreateView(generics.ListCreateAPIView):
+    queryset = CategoriasGastos.objects.all()
+    serializer_class = CategoriasGastosSerializer
+
+class CategoriasGastosDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CategoriasGastos.objects.all()
+    serializer_class = CategoriasGastosSerializer
+
+class EstadosGastosCreateView(generics.ListCreateAPIView):
+    queryset = EstadosGastos.objects.all()
+    serializer_class = EstadosGastosSerializer
+
+class EstadosGastosDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EstadosGastos.objects.all()
+    serializer_class = EstadosGastosSerializer
+
+class GastosCreateView(generics.ListCreateAPIView):
+    queryset = Gastos.objects.all()
+    serializer_class = GastosSerializer
+
+class GastosDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Gastos.objects.all()
+    serializer_class = GastosSerializer    
 # --------------------------------------------------------------------------------------- #
 
 class MyTokenObtainPairView(TokenObtainPairView):

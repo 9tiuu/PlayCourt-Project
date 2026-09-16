@@ -10,10 +10,20 @@ import LoginPage from './pages/LoginPage';
 import UsuariosPage from './pages/usuarios/UsuariosPage';
 import CanchasPage from './pages/canchas/CanchasPage';
 import HomeWebPage from './pages/website/HomeWebPage';
+import EmpleadosPage from './pages/empleados/EmpleadosPage';
+import HorariosPage from './pages/horarios/HorariosPage';
+import ReservasPage from './pages/reservas/ReservasPage';
+import FormReservationWebPage from './pages/website/FormReservationWebPage';
+
 import ReservationsWebPage from './pages/website/ReservationsWebPage';
+import ReservasPagadasPage from './pages/reservas/ReservasPagadasPage';
+import MantenimientoCanchasPage from './pages/mantenimiento/MantenimientoCanchasPage';
+import GastosPage from './pages/gastos/GastosPage';
+
 
 const Router = createBrowserRouter([
-    { path: '/system/home', element: (
+    { 
+      path: '/system/home', element: (
         <ProtectedRoute> 
           <HomePage />
         </ProtectedRoute>
@@ -21,24 +31,78 @@ const Router = createBrowserRouter([
     },
     
     // Restringir vista: solo acceso con rol de administrador
-    { path: '/system/usuarios', element: (
+    { 
+      path: '/system/usuarios', element: (
         <ProtectedRoute>
           <UsuariosPage />
         </ProtectedRoute>
       ) 
     },
 
-    { path: '/system/canchas', element: (
+    { 
+      path: '/system/canchas', element: (
         <ProtectedRoute>
           <CanchasPage />
         </ProtectedRoute>
       ) 
     },
+
+    { 
+      path: '/system/empleados', element: (
+        <ProtectedRoute>
+          <EmpleadosPage />
+        </ProtectedRoute>
+      ) 
+    },
+    
+    { 
+      path: '/system/horarios', element: (
+        <ProtectedRoute>
+          <HorariosPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/reservas', element: (
+        <ProtectedRoute>
+          <ReservasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/reservaspagadas', element: (
+        <ProtectedRoute>
+          <ReservasPagadasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/mantenimiento', element: (
+        <ProtectedRoute>
+          <MantenimientoCanchasPage />
+        </ProtectedRoute>
+      ) 
+    },
+
+    { 
+      path: '/system/gastos', element: (
+        <ProtectedRoute>
+          <GastosPage />
+        </ProtectedRoute>
+      ) 
+    },
     
     { path: '/system/login', element: <LoginPage /> },
+
+    // Website routes
     { path: '/', element: <HomeWebPage /> },
     { path: '/reservas', element: <ReservationsWebPage /> },
+    { path: '/reservas/form/:cancha_nombre/:cancha_numero', element: <FormReservationWebPage /> },
     { path: '*', element: <ErrorPage /> },
+
 ]);
 
 

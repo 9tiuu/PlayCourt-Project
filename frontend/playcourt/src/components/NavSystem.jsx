@@ -59,14 +59,16 @@ const NavSystem = ({ OpenMenuBottom }) => {
                             </div>
                             {   
                                 isOpenDropdown && (
-                                    <div className="z-50 absolute top-0 p-2 right-0 translate-y-[3.8rem] w-60 mr-2 my-4 text-base list-none bg-white dark:bg-color6 divide-y divide-gray-300 dark:divide-color5 rounded-lg shadow border-gray-100 dark:border-color5 border" id="dropdown-user">
+                                    <div className="z-50 absolute top-0 p-2 right-0 translate-y-[3.8rem] w-[17rem] mr-2 my-4 text-base list-none bg-white dark:bg-color6 divide-y divide-gray-300 dark:divide-color5 rounded-lg shadow border-gray-100 dark:border-color5 border" id="dropdown-user">
                                         <div className="px-4 py-3" role="none">
                                             <p className="text-sm text-gray-900 dark:text-white" role="none">
-                                                {user.name} {user.lastname}
+                                                {user.name} {user.lastname} <b className="font-normal text-xs bg-blue-500/30 dark:text-blue-300 text-blue-600 px-2 py-1 rounded-full">{user.rol?.namerol}</b>
                                             </p>
-                                            <p className="text-sm font-medium text-blue-500 truncate" role="none">
+
+                                            <p className="text-xs mt-1 font-medium text-blue-500 truncate" role="none">
                                                 {user.email}
                                             </p>
+                                            
                                         </div>
                                         <ul className="py-1" role="none">
                                             <li>
